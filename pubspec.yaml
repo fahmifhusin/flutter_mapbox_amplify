@@ -12,21 +12,13 @@ dependencies:
   intl: 0.18.0
   dio: 5.2.1+1
   flutter_dotenv: ^5.0.2
-  permission_handler: 10.2.0
-  flutter_local_notifications: 14.0.0+1
-  firebase_messaging: 14.4.1
   flutter_svg: 2.0.6
-  file_picker: 5.3.2
   url_launcher: ^6.1.14
-  firebase_core: 2.15.1
   shared_preferences: 2.1.1
   flutter: 
     sdk: flutter
 
-dev_dependencies: 
-  flutter_lints: ^2.0.0
-  flutter_flavorizr: 2.1.6
-  flutter_launcher_icons: "^0.13.1"
+dev_dependencies:
   flutter_test: 
     sdk: flutter
 
@@ -39,34 +31,3 @@ flutter:
     - assets/fonts/.
   uses-material-design: true
 
-flutter_launcher_icons:
-  android: "launcher_icon"
-  ios: true
-  remove_alpha_ios: true
-  image_path: "assets/images/ic_mapbox_app.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
-  web:
-    generate: true
-    image_path: "assets/images/ic_mapbox_app.png"
-
-
-flavorizr:
-  app:
-   android:
-    flavorDimensions: flavor-type
-   ios: null
-  flavors:
-   development:
-     app:
-       name: Development
-     android:
-       applicationId: com.dev.mapboxamplify
-     ios:
-       bundleId: com.dev.mapboxamplify
-   production:
-     app:
-       name: Production
-     android:
-       applicationId: com.prod.mapboxamplify
-     ios:
-       bundleId: com.prod.mapboxamplify
