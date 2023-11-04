@@ -9,4 +9,6 @@ class AssetsConstant{
     return _assetsConstant;
   }
 
+  final String imgSplash = 'assets/images/ic_mapbox_splash.png';
+
 }

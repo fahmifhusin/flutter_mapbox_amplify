@@ -10,9 +10,10 @@ class ColorConstant {
   }
 
   ///primary color pallete
+  final Color splashYellow = Color(0xFFffc02b);
 
   ///secondary color pallete
-
+  final Color naturalWhite = Color(0xFFFFFFFF);
   ///other color pallete
 
 }

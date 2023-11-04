@@ -1,23 +1,10 @@
 part of splash_lib;
 
-class SplashController extends GetxController {
-  //TODO: Implement SplashController
-
-  final count = 0.obs;
+class SplashController extends GetxController{
+  DeviceSetup setup = DeviceSetup();
   @override
-  void onInit() {
+  void onInit(){
+    setup.setDeviceSetup();
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
