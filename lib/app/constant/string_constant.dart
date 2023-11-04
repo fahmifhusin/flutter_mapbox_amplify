@@ -13,4 +13,6 @@ class StringConstant{
   final String production = 'Production';
   final String appName = 'Map Box';
   final String msgLoadLocation = 'Getting your location...';
+  final String msgTitleErrorLocationDeny = 'Failed to get your location';
+  final String msgErrorLocationDeny = 'Please allow permission from app settings';
 }

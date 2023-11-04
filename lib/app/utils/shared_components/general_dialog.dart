@@ -8,4 +8,13 @@ class GeneralDialog {
   factory GeneralDialog() {
     return _generalDialog;
   }
+
+  void showGeneralSnackbar({required String title, required String msg, Color? customColor}) {
+    Get.closeCurrentSnackbar();
+    Get.snackbar(title, msg,
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor:
+            customColor != null ? customColor : colorConstant.splashYellow,
+        colorText: colorConstant.naturalWhite);
+  }
 }
