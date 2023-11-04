@@ -11,4 +11,6 @@ class StringConstant{
 
   final String development = 'Development';
   final String production = 'Production';
+  final String appName = 'Map Box';
+  final String msgLoadLocation = 'Getting your location...';
 }

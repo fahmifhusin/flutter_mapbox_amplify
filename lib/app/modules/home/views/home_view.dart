@@ -7,10 +7,13 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Map Box'),
-        backgroundColor:
-            F.title == stringConstant.development ? Colors.amber : Colors.green,
-        centerTitle: true,
+        title: Text(F.title == stringConstant.development
+            ? '${stringConstant.appName} ${stringConstant.development}'
+            : stringConstant.appName),
+        // backgroundColor:
+        //     F.title == stringConstant.development ? Colors.amber : Colors.green,
+        backgroundColor: colorConstant.splashYellow,
+        centerTitle: false,
       ),
       body: Obx(
         () => Center(
