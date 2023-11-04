@@ -530,7 +530,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fahmifhusin.getxcodebase.flutterGetxCodebaseSamples;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fahmifhusin.mapboxamplify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1058,7 +1058,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fahmifhusin.getxcodebase.flutterGetxCodebaseSamples;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fahmifhusin.mapboxamplify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -1081,7 +1081,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.fahmifhusin.getxcodebase.flutterGetxCodebaseSamples;
+				PRODUCT_BUNDLE_IDENTIFIER = com.fahmifhusin.mapboxamplify;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_OBJC_BRIDGING_HEADER = "Runner/Runner-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
@@ -1167,6 +1167,7 @@
 			baseConfigurationReference = 7DFA1AB4B20A44852FF0BE0D /* Pods-Runner.debug-development.xcconfig */;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dev.mapboxamplify;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-development";
@@ -1176,6 +1177,7 @@
 			baseConfigurationReference = 9EB4A0F84039C9B1DE70F1BC /* Pods-Runner.profile-development.xcconfig */;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dev.mapboxamplify;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-development";
@@ -1185,6 +1187,7 @@
 			baseConfigurationReference = 041901E1926AF1CD3D43369D /* Pods-Runner.release-development.xcconfig */;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.dev.mapboxamplify;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-development";
@@ -1194,6 +1197,7 @@
 			baseConfigurationReference = D96DF2383DE44BA05B90C447 /* Pods-Runner.debug-production.xcconfig */;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.prod.mapboxamplify;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Debug-production";
@@ -1203,6 +1207,7 @@
 			baseConfigurationReference = F7DB7C34ADE91E7D007B22DE /* Pods-Runner.profile-production.xcconfig */;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.prod.mapboxamplify;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Profile-production";
@@ -1212,6 +1217,7 @@
 			baseConfigurationReference = DD2C57B707975262E18A161C /* Pods-Runner.release-production.xcconfig */;
 			buildSettings = {
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.prod.mapboxamplify;
 				PRODUCT_NAME = Runner;
 			};
 			name = "Release-production";
