@@ -1,4 +1,4 @@
-import 'package:get/get.dart';
+part of home_lib;
 
 class HomeValidationController extends GetxController {
   //TODO: Implement HomeValidationController

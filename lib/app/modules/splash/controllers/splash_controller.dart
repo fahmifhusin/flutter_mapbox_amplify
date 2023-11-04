@@ -1,7 +1,7 @@
-part of home_lib;
+part of splash_lib;
 
-class HomeNavigationController extends GetxController {
-  //TODO: Implement HomeNavigationController
+class SplashController extends GetxController {
+  //TODO: Implement SplashController
 
   final count = 0.obs;
   @override
