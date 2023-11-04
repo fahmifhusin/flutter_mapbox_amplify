@@ -25,7 +25,6 @@ dependencies:
 
 dev_dependencies: 
   flutter_lints: ^2.0.0
-  flutter_flavorizr: 2.1.6
   flutter_launcher_icons: "^0.13.1"
   flutter_test: 
     sdk: flutter
@@ -38,25 +37,3 @@ flutter:
     - assets/images/.
     - assets/fonts/.
   uses-material-design: true
-
-
-flavorizr:
-  app:
-   android:
-    flavorDimensions: flavor-type
-   ios: null
-  flavors:
-   development:
-     app:
-       name: Development
-     android:
-       applicationId: com.codebase.dev
-     ios:
-       bundleId: com.codebase.dev
-   production:
-     app:
-       name: Production
-     android:
-       applicationId: com.codebase
-     ios:
-       bundleId: com.codebase
