@@ -1,4 +1,4 @@
-import 'package:flutter_getx_codebase_samples/app/constant/constants.dart';
+import 'package:flutter_mapbox_amplify/app/constant/constants.dart';
 
 enum Flavor {
   development,
