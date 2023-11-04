@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_amplify/app/utils/device_setup.dart';
 
 import 'package:get/get.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../../constant/constants.dart';
 import '../../routes/app_pages.dart';

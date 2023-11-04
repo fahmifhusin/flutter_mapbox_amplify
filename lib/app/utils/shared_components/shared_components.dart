@@ -1,5 +1,7 @@
 library shared_components;
 
+import 'package:flutter_geocoder/geocoder.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

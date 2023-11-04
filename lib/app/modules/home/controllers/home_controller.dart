@@ -1,23 +1,14 @@
 part of home_lib;
 
 class HomeController extends GetxController {
-  //TODO: Implement HomeController
 
-  final count = 0.obs;
+  var _currentPosition = '...'.obs;
+
+  String get currentPosition => _currentPosition.value;
+
   @override
-  void onInit() {
+  void onInit(){
+    functionSharing.getCurrentCoordinate().then((value) => _currentPosition.value = value);
     super.onInit();
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }
