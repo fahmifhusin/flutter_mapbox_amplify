@@ -39,6 +39,16 @@ flutter:
     - assets/fonts/.
   uses-material-design: true
 
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  remove_alpha_ios: true
+  image_path: "assets/images/ic_mapbox_app.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/images/ic_mapbox_app.png"
+
 
 flavorizr:
   app:
