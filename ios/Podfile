@@ -35,6 +35,9 @@ target 'Runner' do
   target 'RunnerTests' do
     inherit! :search_paths
   end
+  target 'com.fahmifhusin.mapboxamplify' do
+    pod 'MapboxMaps', '10.16.1'
+  end
 end
 
 post_install do |installer|

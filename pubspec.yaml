@@ -18,6 +18,7 @@ dependencies:
   permission_handler: 11.0.1
   geolocator: 10.1.0
   flutter_geocoder: 0.2.2-nullsafety
+  mapbox_gl: ^0.16.0
   flutter:
     sdk: flutter
 
