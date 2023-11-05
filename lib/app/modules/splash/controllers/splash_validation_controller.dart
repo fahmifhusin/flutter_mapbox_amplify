@@ -7,15 +7,17 @@ class SplashValidationController extends GetxController
 
   Future<bool> requestLocationAccess() async {
     bool result = false;
-    if (await Permission.location.isPermanentlyDenied) {
+    if (await functionSharing.isLocationPermanentlyDenied()) {
       logger.d('denied permanen');
-      openAppSettings();
+      // openAppSettings();
     } else {
       Future.delayed(const Duration(milliseconds: 200), () async {
-        await Permission.location.request().whenComplete(() async {
-          if (await Permission.location.isGranted) {
+        await functionSharing.location.then((_) async {
+          if (await functionSharing.isLocationGranted()) {
+            logger.d('diijinkan');
             result = true;
           } else {
+            logger.d('tidak diijinkan');
             result = false;
           }
         });
@@ -24,35 +26,27 @@ class SplashValidationController extends GetxController
     return result;
   }
 
-  void setGeoLocation() {
-    functionSharing.getCurrentCoordinate().then((currentLocation) =>
-        functionSharing.getLatitude().then((latitudeData) =>
-            functionSharing.getLongitude().then((longitudeData) {
-              Future.delayed(const Duration(seconds: 3), () {
-                controllerNavigation.gotoHomeFromSplash(currentLocation: {
-                  argument.currentLocation: currentLocation,
-                  argument.latitudeData: latitudeData,
-                  argument.longitudeData: longitudeData,
-                });
-              });
-            })));
+  Future<void> setGeoLocation() async {
+    var locationData = await functionSharing.location;
+    Future.delayed(const Duration(seconds: 3), () {
+      controllerNavigation.gotoHomeFromSplash(currentLocation: {
+        argument.latitudeData: locationData.latitude,
+        argument.longitudeData: locationData.longitude,
+      });
+    });
   }
 
   Future<void> initSplashScreen() async {
     change(RxStatus.loading());
-    if (await Permission.location.isGranted) {
-      logger.d('location status : Granted');
-      setGeoLocation();
-    } else {
-      logger.d('location status : Set Permission');
-      requestLocationAccess().then((value) async {
+      functionSharing.isLocationGranted().then((value) async {
         if (value == true) {
+          logger.d('location status : true');
           setGeoLocation();
         } else {
+          logger.d('location status : false');
           requestLocationAccess();
         }
       });
-    }
   }
 
   void changeSplashSuccess() => change(RxStatus.success());
@@ -68,9 +62,9 @@ class SplashValidationController extends GetxController
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
     super.didChangeAppLifecycleState(state);
     if (state == AppLifecycleState.resumed) {
-      if (await Permission.location.isGranted) {
+      if (await functionSharing.isLocationGranted()) {
         setGeoLocation();
-      } else if (await Permission.location.isPermanentlyDenied) {
+      } else if (await functionSharing.isLocationPermanentlyDenied()) {
         generalDialog.showGeneralSnackbar(
             title: stringConstant.msgTitleErrorLocationDeny,
             msg: stringConstant.msgErrorLocationDeny,

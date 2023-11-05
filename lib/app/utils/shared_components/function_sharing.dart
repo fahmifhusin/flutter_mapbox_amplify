@@ -9,31 +9,20 @@ class FunctionSharing {
     return _functionSharing;
   }
 
-  Future<Position> get _position async => await Geolocator.getCurrentPosition(
-    desiredAccuracy: LocationAccuracy.high,
-  );
+  final Location _location = Location();
 
-  Future<String> getCurrentCoordinate() async {
-    Position positions = await _position;
-    final coordinates =
-    Coordinates(positions.latitude, positions.longitude);
-    var addresses =
-    await Geocoder.local.findAddressesFromCoordinates(coordinates);
-    var address = addresses.first;
-    return address.addressLine??'-';
+  Future<LocationData> get location async => await _location.getLocation();
+
+  Future<PermissionStatus> get _loadStatus async =>
+      await _location.hasPermission();
+
+  Future<bool> isLocationPermanentlyDenied() async {
+    PermissionStatus status = await _loadStatus;
+    return status == PermissionStatus.deniedForever;
   }
 
-  Future<String> getLatitude() async {
-    Position positions = await _position;
-    final latitudeData = positions.latitude;
-    return latitudeData.toString();
+  Future<bool> isLocationGranted() async {
+    PermissionStatus status = await _loadStatus;
+    return status == PermissionStatus.granted;
   }
-
-  Future<String> getLongitude() async {
-    Position positions = await _position;
-    final longitudeData = positions.longitude;
-    return longitudeData.toString();
-  }
-
-
 }

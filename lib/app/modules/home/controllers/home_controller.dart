@@ -1,10 +1,8 @@
 part of home_lib;
 
 class HomeController extends GetxController {
-
-  var _currentPosition = '...'.obs;
-  var _currentLatitude = '...'.obs;
-  var _currentLongitude = '...'.obs;
+  var _currentLatitude = 0.0.obs;
+  var _currentLongitude = 0.0.obs;
   MapboxMapController? _controllerMapbox;
 
   void onMapboxCreated(MapboxMapController controllerMapbox){
@@ -12,14 +10,11 @@ class HomeController extends GetxController {
   }
 
   void setLocationData(){
-    _currentPosition.value = Get.arguments[argument.currentLocation];
     _currentLatitude.value = Get.arguments[argument.latitudeData];
     _currentLongitude.value = Get.arguments[argument.longitudeData];
   }
-
-  String get currentPosition => _currentPosition.value;
-  double get currentLatitude => double.parse(_currentLatitude.value);
-  double get currentLongitude => double.parse(_currentLongitude.value);
+  double get currentLatitude => _currentLatitude.value;
+  double get currentLongitude => _currentLongitude.value;
 
 
   @override

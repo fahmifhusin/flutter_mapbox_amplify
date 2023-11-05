@@ -11,14 +11,11 @@ dependencies:
   intl: 0.18.0
   dio: 5.2.1+1
   flutter_dotenv: ^5.0.2
-  flutter_svg: 2.0.6
   url_launcher: ^6.1.14
   shared_preferences: 2.1.1
   logger: 2.0.2+1
-  permission_handler: 11.0.1
-  geolocator: 10.1.0
-  flutter_geocoder: 0.2.2-nullsafety
   mapbox_gl: ^0.16.0
+  location: 5.0.0
   flutter:
     sdk: flutter
 
