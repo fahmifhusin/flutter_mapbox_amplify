@@ -13,16 +13,50 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: colorConstant.splashYellow,
         centerTitle: false,
       ),
-      body:  Stack(
-        children: [
-          MapWidget(
-            onTapListener: (value)=>logger.d('coordinate : ${value.x}, ${value.y}'),
+      body: GetBuilder(
+        init: controller,
+        builder: (controller) => MapWidget(
+            onTapListener: (value) => controller.isPickup
+                ? controller.setPickupPoint(
+                    latitude: value.x, longitude: value.y)
+                : controller.setDestinationPoint(
+                    latitude: value.x, longitude: value.y),
             onMapCreated: controller.onMapboxCreated,
-              resourceOptions:
-              ResourceOptions(accessToken: mapboxToken)),
-          generalButtons.PrimaryButton(function: ()=>controller.setCurrentLocation(), btnTitle: 'tes current location')
-        ],
-      )
+            resourceOptions: ResourceOptions(accessToken: mapboxToken)),
+      ),
+      bottomNavigationBar: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: dimensionConstant.spacing12,
+            vertical: dimensionConstant.spacing8),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              children: [
+                Expanded(
+                    child: generalButtons.PrimaryButton(
+                        function: () => controller.setCurrentLocation(),
+                        btnTitle: stringConstant.msgGetCurrentLocation)),
+                SizedBox(
+                  width: dimensionConstant.spacing20,
+                ),
+                Expanded(
+                    child: generalButtons.PrimaryButton(
+                        function: () => controller.showDialogCountDistance(),
+                        btnTitle: stringConstant.countDistance))
+              ],
+            ),
+            GetBuilder(
+              init: controller,
+              builder: (controller) => generalButtons.PrimaryButton(
+                function: () => controller.changeStatusPinpoint(),
+                btnTitle:
+                    '${stringConstant.msgMarkPoint} ${controller.isPickup ? stringConstant.destination : stringConstant.pickup}',
+              ),
+            )
+          ],
+        ),
+      ),
     );
   }
 }
