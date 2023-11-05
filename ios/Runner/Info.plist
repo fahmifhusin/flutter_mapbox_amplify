@@ -51,5 +51,7 @@
     <string>older device need location</string>
     <key>NSLocationAlwaysUsageDescription</key>
     <string>Permit app always access to your location?</string>
+    <key>MBXAccessToken</key>
+    <string>pk.eyJ1IjoiZmFobWlmaHVzaW4iLCJhIjoiY2xva2FncGI2MDNnazJsbjM1MDJrYnNnayJ9.x-fJtXrb-fL_2jZJRWC1pg</string>
 </dict>
 </plist>

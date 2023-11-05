@@ -7,6 +7,5 @@ class DeviceSetup{
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
-    await Permission.location.request();
   }
 }
