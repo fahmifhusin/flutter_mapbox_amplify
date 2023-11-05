@@ -16,11 +16,27 @@ class HomeView extends GetView<HomeController> {
         centerTitle: false,
       ),
       body: Obx(
-        () => Center(
-          child: Text(
-            controller.currentPosition,
-            style: TextStyle(fontSize: 20),
-          ),
+        () => Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'current address : ${controller.currentPosition}',
+              style: TextStyle(fontSize: 20),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Text(
+                  'latitude : ${controller.currentLatitude}',
+                  style: styleConstant.Text16Heading3(),
+                ),
+                Text(
+                  'longitude : ${controller.currentLongitude}',
+                  style: styleConstant.Text16Heading3(),
+                ),
+              ],
+            )
+          ],
         ),
       ),
     );
