@@ -1,5 +1,4 @@
 import 'package:flutter/services.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class DeviceSetup{
   Future<void> setDeviceSetup() async {
