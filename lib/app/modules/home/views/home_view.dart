@@ -13,20 +13,16 @@ class HomeView extends GetView<HomeController> {
         backgroundColor: colorConstant.splashYellow,
         centerTitle: false,
       ),
-      body: Obx(
-        () => MapboxMap(
-          onMapCreated: controller.
-          onMapboxCreated,
-          accessToken: mapboxToken,
-          // myLocationEnabled: true,
-          myLocationRenderMode: MyLocationRenderMode.NORMAL,
-          myLocationTrackingMode: MyLocationTrackingMode.TrackingGPS,
-          initialCameraPosition: CameraPosition(
-            zoom: dimensionConstant.spacing18,
-            target: LatLng(controller.currentLatitude, controller.currentLongitude)
-          ),
-        ),
-      ),
+      body:  Stack(
+        children: [
+          MapWidget(
+            onTapListener: (value)=>logger.d('coordinate : ${value.x}, ${value.y}'),
+            onMapCreated: controller.onMapboxCreated,
+              resourceOptions:
+              ResourceOptions(accessToken: mapboxToken)),
+          generalButtons.PrimaryButton(function: ()=>controller.setCurrentLocation(), btnTitle: 'tes current location')
+        ],
+      )
     );
   }
 }

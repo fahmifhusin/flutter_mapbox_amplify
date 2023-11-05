@@ -10,6 +10,6 @@ class AssetsConstant{
   }
 
   final String imgSplash = 'assets/images/ic_mapbox_splash.png';
-  final String imgMapboxMarker = 'assets/img_mapbox_marker.png';
+  final String imgMapboxMarker = 'assets/images/img_mapbox_marker.png';
 
 }
