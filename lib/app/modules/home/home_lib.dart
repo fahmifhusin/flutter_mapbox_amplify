@@ -3,6 +3,7 @@ library home_lib;
 import 'package:flutter/material.dart';
 import 'package:flutter_mapbox_amplify/app/constant/constants.dart';
 import 'package:get/get.dart';
+import 'package:mapbox_gl/mapbox_gl.dart';
 
 import '../../../flavors.dart';
 ///components

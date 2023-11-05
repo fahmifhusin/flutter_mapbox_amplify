@@ -7,8 +7,8 @@ class HomeController extends GetxController {
   var _currentLongitude = '...'.obs;
 
   String get currentPosition => _currentPosition.value;
-  String get currentLatitude => _currentLatitude.value;
-  String get currentLongitude => _currentLongitude.value;
+  double get currentLatitude => double.parse(_currentLatitude.value);
+  double get currentLongitude => double.parse(_currentLongitude.value);
 
   void setLocationData(){
     _currentPosition.value = Get.arguments[argument.currentLocation];

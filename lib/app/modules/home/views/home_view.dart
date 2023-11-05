@@ -16,28 +16,35 @@ class HomeView extends GetView<HomeController> {
         centerTitle: false,
       ),
       body: Obx(
-        () => Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'current address : ${controller.currentPosition}',
-              style: TextStyle(fontSize: 20),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Text(
-                  'latitude : ${controller.currentLatitude}',
-                  style: styleConstant.Text16Heading3(),
-                ),
-                Text(
-                  'longitude : ${controller.currentLongitude}',
-                  style: styleConstant.Text16Heading3(),
-                ),
-              ],
-            )
-          ],
-        ),
+        () => MapboxMap(
+          accessToken: mapboxToken,
+          initialCameraPosition: CameraPosition(
+            zoom: dimensionConstant.spacing16,
+            target: LatLng(controller.currentLatitude, controller.currentLongitude)
+          ),
+        )
+        //     Column(
+        //   mainAxisAlignment: MainAxisAlignment.center,
+        //   children: [
+        //     Text(
+        //       'current address : ${controller.currentPosition}',
+        //       style: TextStyle(fontSize: 20),
+        //     ),
+        //     Row(
+        //       mainAxisAlignment: MainAxisAlignment.spaceAround,
+        //       children: [
+        //         Text(
+        //           'latitude : ${controller.currentLatitude}',
+        //           style: styleConstant.Text16Heading3(),
+        //         ),
+        //         Text(
+        //           'longitude : ${controller.currentLongitude}',
+        //           style: styleConstant.Text16Heading3(),
+        //         ),
+        //       ],
+        //     )
+        //   ],
+        // ),
       ),
     );
   }
