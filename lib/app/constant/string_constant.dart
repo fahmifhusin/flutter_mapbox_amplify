@@ -14,6 +14,8 @@ class StringConstant{
   ///home
   final String appName = 'Map Box';
   final String countDistance = 'Count Distance';
+  final String currentLocationToPickup = 'Current Location to Pickup';
+  final String currentLocationToDestination = 'Current Location to Destination';
   final String destination = 'Destination';
   final String msgErrorLocationDeny = 'Please allow permission from app settings';
   final String msgGetCurrentLocation = 'Get Current Location';
@@ -21,4 +23,5 @@ class StringConstant{
   final String msgMarkPoint = 'Switch to Mark';
   final String msgTitleErrorLocationDeny = 'Failed to get your location';
   final String pickup = 'Pick Up';
+  final String pickupToDestination = 'Pickup to Destination';
 }

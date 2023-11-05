@@ -19,7 +19,7 @@ dependencies:
   geolocator: 10.1.0
   flutter_geocoder: 0.2.2-nullsafety
   mapbox_maps_flutter: 0.5.0
-  flutter:
+  flutter: 
     sdk: flutter
 
 dev_dependencies: 
