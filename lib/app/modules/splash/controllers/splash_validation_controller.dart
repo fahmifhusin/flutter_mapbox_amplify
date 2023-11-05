@@ -34,13 +34,19 @@ class SplashValidationController extends GetxController
 
   Future<void> initSplashScreen() async {
     change(RxStatus.loading());
-    requestLocationAccess().then((value) async {
-      if (value == true) {
-        setGeoLocation();
-      } else {
-        requestLocationAccess();
-      }
-    });
+    if(await Permission.location.isGranted){
+      logger.d('location status : Granted');
+      setGeoLocation();
+    }else{
+      logger.d('location status : Set Permission');
+      requestLocationAccess().then((value) async {
+        if (value == true) {
+          setGeoLocation();
+        } else {
+          requestLocationAccess();
+        }
+      });
+    }
   }
 
   void changeSplashSuccess() => change(RxStatus.success());
