@@ -100,7 +100,7 @@ class RegisterController extends GetxController {
   }
 
   void gotoSignInFromRegister() {
-    Get.off(Routes.LOGIN);
+    Get.offNamed(Routes.LOGIN);
   }
 
   void goBackToSignUp() {

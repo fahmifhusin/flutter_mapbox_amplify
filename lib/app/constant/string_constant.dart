@@ -34,9 +34,9 @@ class StringConstant{
 
   ///sign up
   final String headerSignUp =
-      'Sign In to Mapbox to Save your location';
+      'Register to Mapbox to Save your location';
   final String headerSignUpVerification = 'We have sent a verification code to';
-  final String signUp = 'Sign Up';
+  final String signUp = 'Register';
   final String emailOrPhone = 'Email / Phone Number';
   final String name = 'Full Name';
   final String email = 'Email';
@@ -55,8 +55,8 @@ class StringConstant{
 
   ///sign in
   final String signInHeader =
-      'Sign In to Mapbox to Save your location';
-  final String signIn = 'Sign in';
+      'Log In to Mapbox to Save your location';
+  final String signIn = 'Log in';
   final String dontHaveAccount = 'Don\'t have an account? ';
 
   ///other
