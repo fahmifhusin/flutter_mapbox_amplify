@@ -19,39 +19,107 @@ class HomeController extends GetxController {
   PointAnnotationManager? pickupPointAnnotationManager;
   PointAnnotation? pickupPointAnnotation;
 
-  Future<void> _createMarker({required double latitude,
-    required double longitude,
-    required PointAnnotationManager? poam}) async {
+  PolylineAnnotation? polylineAnnotation;
+  PolylineAnnotationManager? polylineAnnotationManager;
+
+  Future<void> _createMarker(
+      {required double latitude,
+      required double longitude,
+      required PointAnnotationManager? poam}) async {
     final ByteData bytes =
-    await rootBundle.load(assetsConstant.imgMapboxMarker);
+        await rootBundle.load(assetsConstant.imgMapboxMarker);
     final Uint8List list = bytes.buffer.asUint8List();
 
     poam
         ?.create(PointAnnotationOptions(
-      geometry: Point(
-          coordinates: Position(
+          geometry: Point(
+              coordinates: Position(
             longitude,
             latitude,
           )).toJson(),
-      iconSize: 1,
-      iconOffset: [0.0, -10.0],
-      symbolSortKey: 10,
-      image: list,
-      textField:
-      _isPickup ? stringConstant.pickup : stringConstant.destination,
-      textSize: dimensionConstant.spacing16,
-    ))
-        .then((value) =>
-    isPickup
-        ? pickupPointAnnotation = value
-        : destinationPointAnnotation = value);
+          iconSize: 1,
+          iconOffset: [0.0, -10.0],
+          symbolSortKey: 10,
+          image: list,
+          textField:
+              _isPickup ? stringConstant.pickup : stringConstant.destination,
+          textSize: dimensionConstant.spacing16,
+        ))
+        .then((value) => isPickup
+            ? pickupPointAnnotation = value
+            : destinationPointAnnotation = value);
     update();
+  }
+
+  void createOneAnnotation() {
+    List<Position> coordinatesData = [];
+    final dataWaypoint = [
+      [107.657742, -6.949278],
+      [107.658077, -6.949298],
+      [107.658549, -6.948591],
+      [107.659413, -6.947168],
+      [107.659803, -6.946564],
+      [107.660586, -6.945307]
+    ];
+    for (int i = 0; i < dataWaypoint.length; i++) {
+      coordinatesData.add(Position(dataWaypoint[i][0], dataWaypoint[i][1]));
+    }
+    polylineAnnotationManager
+        ?.create(PolylineAnnotationOptions(
+            geometry: LineString(coordinates: coordinatesData).toJson(),
+            lineColor: Colors.blueAccent.value,
+            lineWidth: 3))
+        .then((value) => polylineAnnotation = value);
   }
 
   void onMapboxCreated(MapboxMap controllerMapbox) async {
     mapboxMap = controllerMapbox;
     setCurrentLocation();
+    mapboxMap?.annotations.createPolylineAnnotationManager().then((value) {
+      polylineAnnotationManager = value;
+      createOneAnnotation();
+      //   final positions = <List<Position>>[];
+      //   final dataWaypoint = [
+      //     [
+      //       107.657742,
+      //       -6.949278
+      //     ],
+      //     [
+      //       107.658077,
+      //       -6.949298
+      //     ],
+      //     [
+      //       107.658549,
+      //       -6.948591
+      //     ],
+      //     [
+      //       107.659413,
+      //       -6.947168
+      //     ],
+      //     [
+      //       107.659803,
+      //       -6.946564
+      //     ],
+      //     [
+      //       107.660586,
+      //       -6.945307
+      //     ]
+      //   ];
+      //   for (int i = 0; i < dataWaypoint.length; i++) {
+      //     positions.add([Position(dataWaypoint[i][0], dataWaypoint[i][1])]);
+      //   }
+      //
+      //   polylineAnnotationManager?.createMulti(positions
+      //       .map((e) => PolylineAnnotationOptions(
+      //           geometry: LineString(coordinates: e).toJson(),
+      //           lineColor: 14562559))
+      //       .toList());
+      //   polylineAnnotationManager
+      //       ?.addOnPolylineAnnotationClickListener(listener!);
+    });
   }
+
+  // OnPolylineAnnotationClickListener? listener;
 
   void setPickupPoint({required double latitude, required double longitude}) {
     _currentPickupLatitude = latitude;
@@ -60,9 +128,9 @@ class HomeController extends GetxController {
       mapboxMap?.annotations.createPointAnnotationManager().then((value) async {
         pickupPointAnnotationManager = value;
         _createMarker(
-            latitude: latitude,
-            longitude: longitude,
-            poam: pickupPointAnnotationManager)
+                latitude: latitude,
+                longitude: longitude,
+                poam: pickupPointAnnotationManager)
             .whenComplete(() => update());
       });
     } else {
@@ -86,9 +154,9 @@ class HomeController extends GetxController {
       mapboxMap?.annotations.createPointAnnotationManager().then((value) async {
         destinationPointAnnotationManager = value;
         _createMarker(
-            latitude: latitude,
-            longitude: longitude,
-            poam: destinationPointAnnotationManager)
+                latitude: latitude,
+                longitude: longitude,
+                poam: destinationPointAnnotationManager)
             .whenComplete(() => update());
       });
     } else {
@@ -106,9 +174,9 @@ class HomeController extends GetxController {
     mapboxMap?.setCamera(CameraOptions(
       center: Point(
           coordinates: Position(
-            currentLongitude,
-            currentLatitude,
-          )).toJson(),
+        currentLongitude,
+        currentLatitude,
+      )).toJson(),
       zoom: dimensionConstant.spacing18,
     ));
   }
@@ -135,13 +203,12 @@ class HomeController extends GetxController {
 
   double get currentDestinationLongitude => _currentDestinationLongitude;
 
-
   void countDistance({required Map<String, dynamic> dataCoordinates}) {
     service.requestLocationDistance({
-    argument.latitudeData:dataCoordinates[argument.latitudeData],
-    argument.longitudeData:dataCoordinates[argument.longitudeData],
-    argument.latitudeData2:dataCoordinates[argument.latitudeData2],
-    argument.longitudeData2:dataCoordinates[argument.longitudeData2],
+      argument.latitudeData: dataCoordinates[argument.latitudeData],
+      argument.longitudeData: dataCoordinates[argument.longitudeData],
+      argument.latitudeData2: dataCoordinates[argument.latitudeData2],
+      argument.longitudeData2: dataCoordinates[argument.longitudeData2],
     });
   }
 
@@ -169,33 +236,30 @@ class HomeController extends GetxController {
                 height: dimensionConstant.spacing10,
               ),
               generalButtons.PrimaryButton(
-                function: () =>
-                    countDistance(dataCoordinates: {
-                      argument.latitudeData: currentLatitude,
-                      argument.longitudeData: currentLongitude,
-                      argument.latitudeData2: currentPickupLatitude,
-                      argument.longitudeData2: currentPickupLongitude,
-                    }),
+                function: () => countDistance(dataCoordinates: {
+                  argument.latitudeData: currentLatitude,
+                  argument.longitudeData: currentLongitude,
+                  argument.latitudeData2: currentPickupLatitude,
+                  argument.longitudeData2: currentPickupLongitude,
+                }),
                 btnTitle: stringConstant.currentLocationToPickup,
               ),
               generalButtons.PrimaryButton(
-                function: () =>
-                    countDistance(dataCoordinates: {
-                      argument.latitudeData: currentLatitude,
-                      argument.longitudeData: currentLongitude,
-                      argument.latitudeData2: currentDestinationLatitude,
-                      argument.longitudeData2: currentDestinationLongitude,
-                    }),
+                function: () => countDistance(dataCoordinates: {
+                  argument.latitudeData: currentLatitude,
+                  argument.longitudeData: currentLongitude,
+                  argument.latitudeData2: currentDestinationLatitude,
+                  argument.longitudeData2: currentDestinationLongitude,
+                }),
                 btnTitle: stringConstant.currentLocationToDestination,
               ),
               generalButtons.PrimaryButton(
-                function: () =>
-                    countDistance(dataCoordinates: {
-                      argument.latitudeData: currentPickupLatitude,
-                      argument.longitudeData: currentPickupLongitude,
-                      argument.latitudeData2: currentDestinationLatitude,
-                      argument.longitudeData2: currentDestinationLongitude,
-                    }),
+                function: () => countDistance(dataCoordinates: {
+                  argument.latitudeData: currentPickupLatitude,
+                  argument.longitudeData: currentPickupLongitude,
+                  argument.latitudeData2: currentDestinationLatitude,
+                  argument.longitudeData2: currentDestinationLongitude,
+                }),
                 btnTitle: stringConstant.pickupToDestination,
               ),
             ],
