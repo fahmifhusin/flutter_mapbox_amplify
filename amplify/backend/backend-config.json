@@ -1,0 +1,8 @@
+{
+  "storage": {
+    "dynamomapbox": {
+      "providerPlugin": "awscloudformation",
+      "service": "DynamoDB"
+    }
+  }
+}

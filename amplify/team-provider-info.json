@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-fluttermapboxamplify-dev-112436-authRole",
+      "UnauthRoleArn": "arn:aws:iam::945478390446:role/amplify-fluttermapboxamplify-dev-112436-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::945478390446:role/amplify-fluttermapboxamplify-dev-112436-authRole",
+      "Region": "us-east-2",
+      "DeploymentBucketName": "amplify-fluttermapboxamplify-dev-112436-deployment",
+      "UnauthRoleName": "amplify-fluttermapboxamplify-dev-112436-unauthRole",
+      "StackName": "amplify-fluttermapboxamplify-dev-112436",
+      "StackId": "arn:aws:cloudformation:us-east-2:945478390446:stack/amplify-fluttermapboxamplify-dev-112436/66acf330-7c5c-11ee-818c-02d0b068ead1",
+      "AmplifyAppId": "d3r6l1g7te102k"
+    },
+    "categories": {
+      "storage": {
+        "dynamomapbox": {}
+      }
+    }
+  }
+}

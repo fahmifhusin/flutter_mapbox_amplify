@@ -1,0 +1,14 @@
+{
+  "resourceName": "dynamomapbox",
+  "tableName": "mapbox_data",
+  "partitionKey": {
+    "fieldName": "id",
+    "fieldType": "number"
+  },
+  "sortKey": {
+    "fieldName": "userId",
+    "fieldType": "string"
+  },
+  "gsi": [],
+  "triggerFunctions": []
+}

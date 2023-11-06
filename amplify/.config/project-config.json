@@ -1,0 +1,13 @@
+{
+  "projectName": "fluttermapboxamplify",
+  "version": "3.1",
+  "frontend": "flutter",
+  "flutter": {
+    "config": {
+      "ResDir": "./lib/utils"
+    }
+  },
+  "providers": [
+    "awscloudformation"
+  ]
+}
