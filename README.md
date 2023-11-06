@@ -1,6 +1,6 @@
-# Flutter Code Base
+# Flutter MapBox Amplify
 
-### This is an example of code structure I use when working on a project from scratch using Flutter. The structure may vary slightly depending on the state management and project scope.
+### This is an example of code for implementing mapbox as map services.
 
 ### How to run the project:
 #### Development Flavor:
@@ -8,6 +8,9 @@ flutter run --flavor development -t lib/main_development.dart
 
 #### Production Flavor:
 flutter run --flavor production -t lib/main_production.dart
+
+#### Link Apk sample & demo:
+https://drive.google.com/drive/folders/19TXMUDKhrUYILwgz0XM4FFE5XkbTy_7z?usp=sharing
 
 #### In this project, there are several files and folders to pay attention to:
 
