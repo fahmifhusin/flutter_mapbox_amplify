@@ -25,22 +25,34 @@ class SplashValidationController extends GetxController
   }
 
   void setGeoLocation() {
-    functionSharing.getCurrentCoordinate().then((value) {
-      Future.delayed(const Duration(seconds: 3), () {
-        controllerNavigation.gotoHomeFromSplash(currentLocation: value);
-      });
-    });
+    functionSharing.getCurrentCoordinate().then((currentLocation) =>
+        functionSharing.getLatitude().then((latitudeData) =>
+            functionSharing.getLongitude().then((longitudeData) {
+              Future.delayed(const Duration(seconds: 3), () {
+                controllerNavigation.gotoHomeFromSplash(currentLocation: {
+                  argument.currentLocation: currentLocation,
+                  argument.latitudeData: latitudeData,
+                  argument.longitudeData: longitudeData,
+                });
+              });
+            })));
   }
 
   Future<void> initSplashScreen() async {
     change(RxStatus.loading());
-    requestLocationAccess().then((value) async {
-      if (value == true) {
-        setGeoLocation();
-      } else {
-        requestLocationAccess();
-      }
-    });
+    if (await Permission.location.isGranted) {
+      logger.d('location status : Granted');
+      setGeoLocation();
+    } else {
+      logger.d('location status : Set Permission');
+      requestLocationAccess().then((value) async {
+        if (value == true) {
+          setGeoLocation();
+        } else {
+          requestLocationAccess();
+        }
+      });
+    }
   }
 
   void changeSplashSuccess() => change(RxStatus.success());
@@ -58,9 +70,9 @@ class SplashValidationController extends GetxController
     if (state == AppLifecycleState.resumed) {
       if (await Permission.location.isGranted) {
         setGeoLocation();
-      }else if(await Permission.location.isPermanentlyDenied) {
+      } else if (await Permission.location.isPermanentlyDenied) {
         generalDialog.showGeneralSnackbar(
-          title: stringConstant.msgTitleErrorLocationDeny,
+            title: stringConstant.msgTitleErrorLocationDeny,
             msg: stringConstant.msgErrorLocationDeny,
             customColor: Colors.redAccent);
         Future.delayed(const Duration(seconds: 2), () {
