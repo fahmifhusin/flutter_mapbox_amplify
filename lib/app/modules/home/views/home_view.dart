@@ -29,8 +29,20 @@ class HomeView extends GetView<HomeController> {
             horizontal: dimensionConstant.spacing12,
             vertical: dimensionConstant.spacing8),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisSize: MainAxisSize.min,
           children: [
+            GetBuilder(
+              init: controller,
+              builder: (controller) => Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text('${stringConstant.from} : ${controller.waypointFrom}'),
+                  Text('${stringConstant.to} : ${controller.waypointTo}'),
+                  Text('${stringConstant.distance} : ${controller.distance}'),
+                ],
+              ),
+            ),
             Row(
               children: [
                 Expanded(

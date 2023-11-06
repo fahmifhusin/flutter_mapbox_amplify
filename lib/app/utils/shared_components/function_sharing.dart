@@ -22,6 +22,8 @@ class FunctionSharing {
     var address = addresses.first;
     return address.addressLine??'-';
   }
+  
+  double getDistance(lat1, long1, lat2, long2) =>Geolocator.distanceBetween(lat1, long1, lat2, long2);
 
   Future<String> getLatitude() async {
     Position positions = await _position;

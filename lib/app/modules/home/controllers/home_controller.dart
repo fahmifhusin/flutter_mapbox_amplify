@@ -9,18 +9,21 @@ class HomeController extends GetxController {
   double _currentDestinationLatitude = 0.0;
   double _currentDestinationLongitude = 0.0;
   CountDistanceService service = CountDistanceService();
+  String _waypointFrom = '';
+  String _waypointTo = '';
+  double _distance = 0.0;
 
   bool _isPickup = false;
-  MapboxMap? mapboxMap;
+  MapboxMap? _mapboxMap;
 
-  PointAnnotationManager? destinationPointAnnotationManager;
-  PointAnnotation? destinationPointAnnotation;
+  PointAnnotationManager? _destinationPointAnnotationManager;
+  PointAnnotation? _destinationPointAnnotation;
 
-  PointAnnotationManager? pickupPointAnnotationManager;
-  PointAnnotation? pickupPointAnnotation;
+  PointAnnotationManager? _pickupPointAnnotationManager;
+  PointAnnotation? _pickupPointAnnotation;
 
-  PolylineAnnotation? polylineAnnotation;
-  PolylineAnnotationManager? polylineAnnotationManager;
+  PolylineAnnotation? _polylineAnnotation;
+  PolylineAnnotationManager? _polylineAnnotationManager;
 
   Future<void> _createMarker(
       {required double latitude,
@@ -45,52 +48,59 @@ class HomeController extends GetxController {
           textSize: dimensionConstant.spacing16,
         ))
         .then((value) => isPickup
-            ? pickupPointAnnotation = value
-            : destinationPointAnnotation = value);
+            ? _pickupPointAnnotation = value
+            : _destinationPointAnnotation = value);
     update();
   }
 
-  void setWaypoint({required coordinates}){
+  void setWaypoint({required coordinates}) {
     List<Position> coordinatesData = [];
     for (int i = 0; i < coordinates.length; i++) {
       coordinatesData.add(Position(coordinates[i][0], coordinates[i][1]));
     }
-    polylineAnnotationManager
-        ?.create(PolylineAnnotationOptions(
-        geometry: LineString(coordinates: coordinatesData).toJson(),
-        lineColor: Colors.blueAccent.value,
-        lineWidth: 3))
-        .then((value) => polylineAnnotation = value);
+    if (_polylineAnnotation != null) {
+      var newlineString = LineString(coordinates: coordinatesData);
+      _polylineAnnotation?.geometry = newlineString.toJson();
+      _polylineAnnotationManager?.update(_polylineAnnotation!);
+    } else {
+      _polylineAnnotationManager
+          ?.create(PolylineAnnotationOptions(
+              geometry: LineString(coordinates: coordinatesData).toJson(),
+              lineColor: Colors.blueAccent.value,
+              lineWidth: 3))
+          .then((value) => _polylineAnnotation = value);
+    }
+
     update();
     Get.back();
   }
 
   void onMapboxCreated(MapboxMap controllerMapbox) async {
-    mapboxMap = controllerMapbox;
+    _mapboxMap = controllerMapbox;
     setCurrentLocation();
-    mapboxMap?.annotations.createPolylineAnnotationManager().then((value) {
-      polylineAnnotationManager = value;
+    _mapboxMap?.annotations.createPolylineAnnotationManager().then((value) {
+      _polylineAnnotationManager = value;
     });
   }
-
-  // OnPolylineAnnotationClickListener? listener;
 
   void setPickupPoint({required double latitude, required double longitude}) {
     _currentPickupLatitude = latitude;
     _currentPickupLongitude = longitude;
-    if (pickupPointAnnotationManager == null) {
-      mapboxMap?.annotations.createPointAnnotationManager().then((value) async {
-        pickupPointAnnotationManager = value;
+    if (_pickupPointAnnotationManager == null) {
+      _mapboxMap?.annotations
+          .createPointAnnotationManager()
+          .then((value) async {
+        _pickupPointAnnotationManager = value;
         _createMarker(
                 latitude: latitude,
                 longitude: longitude,
-                poam: pickupPointAnnotationManager)
+                poam: _pickupPointAnnotationManager)
             .whenComplete(() => update());
       });
     } else {
       var newPoint = Point(coordinates: Position(longitude, latitude));
-      pickupPointAnnotation?.geometry = newPoint.toJson();
-      pickupPointAnnotationManager?.update(pickupPointAnnotation!);
+      _pickupPointAnnotation?.geometry = newPoint.toJson();
+      _pickupPointAnnotationManager?.update(_pickupPointAnnotation!);
       update();
     }
   }
@@ -104,28 +114,30 @@ class HomeController extends GetxController {
       {required double latitude, required double longitude}) {
     _currentDestinationLatitude = latitude;
     _currentDestinationLongitude = longitude;
-    if (destinationPointAnnotationManager == null) {
-      mapboxMap?.annotations.createPointAnnotationManager().then((value) async {
-        destinationPointAnnotationManager = value;
+    if (_destinationPointAnnotationManager == null) {
+      _mapboxMap?.annotations
+          .createPointAnnotationManager()
+          .then((value) async {
+        _destinationPointAnnotationManager = value;
         _createMarker(
                 latitude: latitude,
                 longitude: longitude,
-                poam: destinationPointAnnotationManager)
+                poam: _destinationPointAnnotationManager)
             .whenComplete(() => update());
       });
     } else {
       var newPoint = Point(coordinates: Position(longitude, latitude));
-      destinationPointAnnotation?.geometry = newPoint.toJson();
-      destinationPointAnnotationManager?.update(destinationPointAnnotation!);
+      _destinationPointAnnotation?.geometry = newPoint.toJson();
+      _destinationPointAnnotationManager?.update(_destinationPointAnnotation!);
       update();
     }
   }
 
   void setCurrentLocation() async {
     Get.back();
-    mapboxMap?.location
+    _mapboxMap?.location
         .updateSettings(LocationComponentSettings(enabled: true));
-    mapboxMap?.setCamera(CameraOptions(
+    _mapboxMap?.setCamera(CameraOptions(
       center: Point(
           coordinates: Position(
         currentLongitude,
@@ -135,10 +147,26 @@ class HomeController extends GetxController {
     ));
   }
 
-  void setLocationData() {
+  void setInitialLocationData() {
     _currentPosition.value = Get.arguments[argument.currentLocation];
     _currentLatitude.value = Get.arguments[argument.latitudeData];
     _currentLongitude.value = Get.arguments[argument.longitudeData];
+  }
+
+  void countDistance({required Map<String, dynamic> dataCoordinates}) {
+    service.requestLocationDistance({
+      argument.latitudeData: dataCoordinates[argument.latitudeData],
+      argument.longitudeData: dataCoordinates[argument.longitudeData],
+      argument.latitudeData2: dataCoordinates[argument.latitudeData2],
+      argument.longitudeData2: dataCoordinates[argument.longitudeData2],
+    })?.then(
+      (value) {
+        setWaypoint(coordinates: value.routes![0].geometry!.coordinates);
+        _waypointFrom = value.waypoints!.first.name!;
+        _waypointTo = value.waypoints!.last.name!;
+        _distance = functionSharing.getDistance(value.waypoints!.first.location!.last, value.waypoints!.first.location!.first, value.waypoints!.last.location!.last, value.waypoints!.last.location!.first);
+      },
+    );
   }
 
   bool get isPickup => _isPickup;
@@ -157,16 +185,13 @@ class HomeController extends GetxController {
 
   double get currentDestinationLongitude => _currentDestinationLongitude;
 
-  void countDistance({required Map<String, dynamic> dataCoordinates}) {
-    service.requestLocationDistance({
-      argument.latitudeData: dataCoordinates[argument.latitudeData],
-      argument.longitudeData: dataCoordinates[argument.longitudeData],
-      argument.latitudeData2: dataCoordinates[argument.latitudeData2],
-      argument.longitudeData2: dataCoordinates[argument.longitudeData2],
-    })?.then(
-      (value) => setWaypoint(coordinates: value.routes![0].geometry!.coordinates),
-    );
-  }
+  String get waypointFrom => _waypointFrom;
+
+  String get waypointTo => _waypointTo;
+
+  String get distance => '${_distance.toStringAsFixed(0)} ${stringConstant.meters}';
+
+  bool get isRouteAvailable => _polylineAnnotation != null;
 
   showDialogCountDistance() {
     Get.dialog(
@@ -227,7 +252,7 @@ class HomeController extends GetxController {
 
   @override
   void onInit() {
-    setLocationData();
+    setInitialLocationData();
     super.onInit();
   }
 }

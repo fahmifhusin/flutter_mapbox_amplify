@@ -24,4 +24,8 @@ class StringConstant{
   final String msgTitleErrorLocationDeny = 'Failed to get your location';
   final String pickup = 'Pick Up';
   final String pickupToDestination = 'Pickup to Destination';
+  final String meters = 'Meters';
+  final String from = 'from';
+  final String to = 'to';
+  final String distance = 'distance';
 }
