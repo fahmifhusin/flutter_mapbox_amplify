@@ -31,6 +31,7 @@ class StringConstant{
   final String startNavigation = 'Start Navigation';
   final String stopNavigation = 'Stop Navigation';
   final String action = 'Action';
+  final String save = 'Save';
 
   ///sign up
   final String headerSignUp =
@@ -52,6 +53,7 @@ class StringConstant{
   final String verificationSuccess= 'Verification Success';
   final String successVerify ='Register account Success!';
   final String hi = 'Hi,';
+  final String tapMap = 'Tap the map to choose the destination';
 
   ///sign in
   final String signInHeader =

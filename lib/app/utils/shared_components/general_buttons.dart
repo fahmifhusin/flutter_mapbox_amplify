@@ -9,12 +9,14 @@ class GeneralButtons {
     return _generalButtons;
   }
 
-  Widget _BaseGeneralButton(
-      {required Function function,
-        required String btnTitle,
-        required bool isLoading,
-        required bool isActive,
-        Color? customBtnColor}) {
+  Widget _BaseGeneralButton({
+    required Function function,
+    required String btnTitle,
+    required bool isLoading,
+    required bool isActive,
+    Color? customBtnColor,
+    String? customIcon,
+  }) {
     return Padding(
       padding: EdgeInsets.only(
         top: dimensionConstant.spacing20,
@@ -25,8 +27,8 @@ class GeneralButtons {
             foregroundColor: colorConstant.naturalWhite,
             backgroundColor: isActive
                 ? customBtnColor != null
-                ? customBtnColor
-                : Colors.lightBlue
+                    ? customBtnColor
+                    : Colors.lightBlue
                 : Colors.grey,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
@@ -42,13 +44,30 @@ class GeneralButtons {
         onPressed: () => function(),
         child: isLoading
             ? SizedBox(
-          width: dimensionConstant.spacing16,
-          height: dimensionConstant.spacing16,
-          child: CircularProgressIndicator(
-            color: colorConstant.naturalWhite,
-          ),
-        )
-            : Text(btnTitle),
+                width: dimensionConstant.spacing16,
+                height: dimensionConstant.spacing16,
+                child: CircularProgressIndicator(
+                  color: colorConstant.naturalWhite,
+                ),
+              )
+            : Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(btnTitle),
+                  customIcon != null
+                      ? Padding(
+                          padding: EdgeInsets.only(
+                            left: dimensionConstant.spacing8,
+                          ),
+                          child: Image.asset(
+                            customIcon,
+                            width: dimensionConstant.spacing16,
+                            height: dimensionConstant.spacing16,
+                          ),
+                        )
+                      : SizedBox()
+                ],
+              ),
       ),
     );
   }
@@ -59,13 +78,15 @@ class GeneralButtons {
     bool isLoading = false,
     bool isActive = true,
     Color? customBtnColor,
+    String? customIcon,
   }) {
     return _BaseGeneralButton(
-        function: function,
-        btnTitle: btnTitle,
-        isLoading: isLoading,
-        isActive: isActive,
-        customBtnColor: customBtnColor);
+      function: function,
+      btnTitle: btnTitle,
+      isLoading: isLoading,
+      isActive: isActive,
+      customBtnColor: customBtnColor,
+      customIcon: customIcon,
+    );
   }
-
 }

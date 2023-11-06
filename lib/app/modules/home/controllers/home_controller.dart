@@ -11,6 +11,7 @@ class HomeController extends GetxController {
   double _locationDestinationLatitude = 0.0;
   double _locationDestinationLongitude = 0.0;
   bool _isPickupToDestinationOption = false;
+  bool _isMarkerEnable = false;
   CountDistanceService service = CountDistanceService();
   String _waypointFrom = '';
   String _waypointTo = '';
@@ -26,6 +27,10 @@ class HomeController extends GetxController {
   PointAnnotationManager? _destinationPointAnnotationManager;
   PointAnnotation? _destinationPointAnnotation;
 
+  ///variable for handle saved marker
+  PointAnnotationManager? _markerPointAnnotationManager;
+  PointAnnotation? _markerPointAnnotation;
+
   ///variable for handle pickup pinpoint
   PointAnnotationManager? _pickupPointAnnotationManager;
   PointAnnotation? _pickupPointAnnotation;
@@ -37,7 +42,9 @@ class HomeController extends GetxController {
   Future<void> _createMarker(
       {required double latitude,
       required double longitude,
-      required PointAnnotationManager? poam}) async {
+      required PointAnnotationManager? poam,
+      bool isMarker = false,
+      String? customTitle}) async {
     final ByteData bytes =
         await rootBundle.load(assetsConstant.imgMapboxMarker);
     final Uint8List list = bytes.buffer.asUint8List();
@@ -52,14 +59,18 @@ class HomeController extends GetxController {
           iconOffset: [0.0, -10.0],
           symbolSortKey: 10,
           image: list,
-          textField:
-              _isPickup ? stringConstant.pickup : stringConstant.destination,
+          textField: customTitle != null && isMarker
+              ? customTitle
+              : _isPickup
+                  ? stringConstant.pickup
+                  : stringConstant.destination,
           textSize: dimensionConstant.spacing16,
         ))
-        .then((value) => isPickup
-            ? _pickupPointAnnotation = value
-            : _destinationPointAnnotation = value);
-    update();
+        .then((value) => isMarker
+            ? _markerPointAnnotation
+            : isPickup
+                ? _pickupPointAnnotation = value
+                : _destinationPointAnnotation = value);
   }
 
   void startMapNavigation() {
@@ -233,11 +244,18 @@ class HomeController extends GetxController {
             value.waypoints!.first.location!.first,
             value.waypoints!.last.location!.last,
             value.waypoints!.last.location!.first);
+
       },
     );
   }
 
   bool get isPickup => _isPickup;
+
+  bool get isMarkerEnable =>_isMarkerEnable;
+
+  bool get isCountDistanceVisible =>
+      _destinationPointAnnotationManager != null ||
+      _pickupPointAnnotationManager != null;
 
   String get currentPosition => _currentPosition.value;
 
@@ -293,6 +311,7 @@ class HomeController extends GetxController {
                 function: () {
                   _isPickupToDestinationOption = false;
                   Get.back();
+                  _isMarkerEnable = true;
                   update();
                   countDistance(dataCoordinates: {
                     argument.latitudeData: currentLatitude,
@@ -307,6 +326,7 @@ class HomeController extends GetxController {
                 function: () {
                   _isPickupToDestinationOption = false;
                   Get.back();
+                  _isMarkerEnable = true;
                   update();
                   countDistance(dataCoordinates: {
                     argument.latitudeData: currentLatitude,
@@ -321,6 +341,7 @@ class HomeController extends GetxController {
                 function: () {
                   _isPickupToDestinationOption = true;
                   Get.back();
+                  _isMarkerEnable = true;
                   update();
                   countDistance(dataCoordinates: {
                     argument.latitudeData: currentPickupLatitude,
@@ -338,13 +359,52 @@ class HomeController extends GetxController {
     );
   }
 
-  Future<void> saveLocationPickupAndDestination() async {
-    try{
-      await Amplify.Auth.getCurrentUser().then((value) {
-        logger.d('value user : $value');
-
+  void createSavedMarker() {
+    _mapboxMap?.annotations.createPointAnnotationManager().then((value) async {
+      _markerPointAnnotationManager = value;
+      _isMarkerEnable = false;
+      _createMarker(
+              isMarker: true,
+              customTitle: _waypointTo,
+              latitude: _locationDestinationLatitude,
+              longitude: _locationDestinationLongitude,
+              poam: _markerPointAnnotationManager)
+          .whenComplete(() {
+        generalDialog.showGeneralSnackbar(
+          title: 'Success',
+          msg: 'Marker Saved',
+          customColor: Colors.green,
+        );
       });
-    }catch(_){
+    });
+  }
+
+  Future<void> saveLocationPickupAndDestination() async {
+    try {
+      await Amplify.Auth.getCurrentUser().then((value) async {
+        logger.d('value user : $value');
+        final String userId = value.userId;
+        try {
+          await Amplify.DataStore.save(
+            LOCATIONDATA(
+              userId: userId,
+              locationFrom: _waypointFrom,
+              locationTo: _waypointTo,
+              distance: _distance.toString(),
+              coordinates:
+                  '${_locationDestinationLatitude},${_locationDestinationLongitude}',
+            ),
+          ).then((_) {
+            createSavedMarker();
+          });
+        } catch (e) {
+          generalDialog.showGeneralSnackbar(
+              title: stringConstant.error,
+              msg: stringConstant.generalMsgError,
+              customColor: colorConstant.redAutumn);
+        }
+      });
+    } catch (_) {
       Get.toNamed(Routes.LOGIN);
     }
   }

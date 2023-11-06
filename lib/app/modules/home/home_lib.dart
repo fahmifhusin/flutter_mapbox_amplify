@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_mapbox_amplify/app/constant/constants.dart';
 import 'package:flutter_mapbox_amplify/app/modules/home/services/count_distance_service.dart';
+import 'package:flutter_mapbox_amplify/models/LOCATIONDATA.dart';
 import 'package:get/get.dart';
 import 'package:mapbox_maps_flutter/mapbox_maps_flutter.dart';
 
