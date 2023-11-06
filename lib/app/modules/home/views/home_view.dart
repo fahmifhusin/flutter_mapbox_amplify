@@ -39,7 +39,7 @@ class HomeView extends GetView<HomeController> {
                 children: [
                   ///set dari controller kalo ada waktu keneh
                   Text(
-                    'Action : Walking',
+                    '${stringConstant.action} : Walking',
                     style: styleConstant.Text14Body1(
                       isSemiBold: true,
                     ),
@@ -47,6 +47,22 @@ class HomeView extends GetView<HomeController> {
                   Text('${stringConstant.from} : ${controller.waypointFrom}'),
                   Text('${stringConstant.to} : ${controller.waypointTo}'),
                   Text('${stringConstant.distance} : ${controller.distance}'),
+                  SizedBox(
+                    height: dimensionConstant.spacing12,
+                  ),
+                  controller.isRouteAvailable
+                      ? generalButtons.PrimaryButton(
+                          customBtnColor: controller.trackLocation
+                              ? colorConstant.redAutumn
+                              : Colors.lightBlue,
+                          function: () => controller.trackLocation
+                              ? controller.stopMapNavigation()
+                              : controller.startMapNavigation(),
+                          btnTitle: controller.trackLocation
+                              ? stringConstant.stopNavigation
+                              : stringConstant.startNavigation,
+                        )
+                      : SizedBox()
                 ],
               ),
             ),

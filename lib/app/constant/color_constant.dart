@@ -14,6 +14,7 @@ class ColorConstant {
 
   ///secondary color pallete
   final Color naturalWhite = Color(0xFFFFFFFF);
+  final Color redAutumn = Color(0xFFDC2F02);
   ///other color pallete
 
 }

@@ -8,22 +8,34 @@ class HomeController extends GetxController {
   double _currentPickupLongitude = 0.0;
   double _currentDestinationLatitude = 0.0;
   double _currentDestinationLongitude = 0.0;
+  double _locationDestinationLatitude = 0.0;
+  double _locationDestinationLongitude = 0.0;
+  bool _isPickupToDestinationOption = false;
   CountDistanceService service = CountDistanceService();
   String _waypointFrom = '';
   String _waypointTo = '';
   double _distance = 0.0;
+  Timer? timerCamera;
+  Timer? timerGetLocation;
+  bool _trackLocation = false;
 
   bool _isPickup = false;
   MapboxMap? _mapboxMap;
 
+  ///variable for handle destination pinpoint
   PointAnnotationManager? _destinationPointAnnotationManager;
   PointAnnotation? _destinationPointAnnotation;
 
+  ///variable for handle pickup pinpoint
   PointAnnotationManager? _pickupPointAnnotationManager;
   PointAnnotation? _pickupPointAnnotation;
 
+  ///variable for handle way point
   PolylineAnnotation? _polylineAnnotation;
   PolylineAnnotationManager? _polylineAnnotationManager;
+
+  ///variable for handle start navigation
+  PointAnnotationManager? pointAnnotationNavigator;
 
   Future<void> _createMarker(
       {required double latitude,
@@ -53,6 +65,55 @@ class HomeController extends GetxController {
     update();
   }
 
+  void startMapNavigation() {
+    _trackLocation = true;
+    update();
+    refreshTrackLocation();
+  }
+
+  void stopMapNavigation() {
+    _trackLocation = false;
+    update();
+    refreshTrackLocation();
+  }
+
+  void refreshTrackLocation() async {
+    timerCamera?.cancel();
+    timerGetLocation?.cancel();
+    if (_trackLocation) {
+      timerCamera = Timer.periodic(const Duration(seconds: 1), (timer) async {
+        setCameraPosition();
+      });
+      timerGetLocation =
+          Timer.periodic(const Duration(seconds: 5), (timer) async {
+        countDistance(dataCoordinates: {
+          argument.latitudeData: currentLatitude,
+          argument.longitudeData: currentLongitude,
+          argument.latitudeData2: _locationDestinationLatitude,
+          argument.longitudeData2: _locationDestinationLongitude,
+        });
+      });
+    }
+  }
+
+  void setCameraPosition() async {
+    String currentLatitudeCam = await functionSharing.getLatitude();
+    String currentLongitudeCam = await functionSharing.getLongitude();
+    _currentLatitude.value = currentLatitudeCam;
+    _currentLongitude.value = currentLongitudeCam;
+    _mapboxMap?.flyTo(
+        CameraOptions(
+          center: Point(
+              coordinates: Position(
+            double.parse(currentLongitudeCam),
+            double.parse(currentLatitudeCam),
+          )).toJson(),
+          zoom: dimensionConstant.spacing18,
+        ),
+        null);
+    update();
+  }
+
   void setWaypoint({required coordinates}) {
     List<Position> coordinatesData = [];
     for (int i = 0; i < coordinates.length; i++) {
@@ -62,16 +123,18 @@ class HomeController extends GetxController {
       var newlineString = LineString(coordinates: coordinatesData);
       _polylineAnnotation?.geometry = newlineString.toJson();
       _polylineAnnotationManager?.update(_polylineAnnotation!);
+      update();
     } else {
       _polylineAnnotationManager
           ?.create(PolylineAnnotationOptions(
               geometry: LineString(coordinates: coordinatesData).toJson(),
               lineColor: Colors.blueAccent.value,
               lineWidth: 3))
-          .then((value) => _polylineAnnotation = value);
+          .then((value) {
+        _polylineAnnotation = value;
+        update();
+      });
     }
-
-    update();
     Get.back();
   }
 
@@ -154,6 +217,8 @@ class HomeController extends GetxController {
   }
 
   void countDistance({required Map<String, dynamic> dataCoordinates}) {
+    _locationDestinationLatitude = dataCoordinates[argument.latitudeData2];
+    _locationDestinationLongitude = dataCoordinates[argument.longitudeData2];
     service.requestLocationDistance({
       argument.latitudeData: dataCoordinates[argument.latitudeData],
       argument.longitudeData: dataCoordinates[argument.longitudeData],
@@ -164,7 +229,11 @@ class HomeController extends GetxController {
         setWaypoint(coordinates: value.routes![0].geometry!.coordinates);
         _waypointFrom = value.waypoints!.first.name!;
         _waypointTo = value.waypoints!.last.name!;
-        _distance = functionSharing.getDistance(value.waypoints!.first.location!.last, value.waypoints!.first.location!.first, value.waypoints!.last.location!.last, value.waypoints!.last.location!.first);
+        _distance = functionSharing.getDistance(
+            value.waypoints!.first.location!.last,
+            value.waypoints!.first.location!.first,
+            value.waypoints!.last.location!.last,
+            value.waypoints!.last.location!.first);
       },
     );
   }
@@ -189,11 +258,15 @@ class HomeController extends GetxController {
 
   String get waypointTo => _waypointTo;
 
-  String get distance => '${_distance.toStringAsFixed(0)} ${stringConstant.meters}';
+  String get distance =>
+      '${_distance.toStringAsFixed(0)} ${stringConstant.meters}';
 
-  bool get isRouteAvailable => _polylineAnnotation != null;
+  bool get isRouteAvailable => _polylineAnnotation != null && !_isPickupToDestinationOption;
+
+  bool get trackLocation => _trackLocation;
 
   showDialogCountDistance() {
+    stopMapNavigation();
     Get.dialog(
       Dialog(
         child: Container(
@@ -217,30 +290,42 @@ class HomeController extends GetxController {
                 height: dimensionConstant.spacing10,
               ),
               generalButtons.PrimaryButton(
-                function: () => countDistance(dataCoordinates: {
-                  argument.latitudeData: currentLatitude,
-                  argument.longitudeData: currentLongitude,
-                  argument.latitudeData2: currentPickupLatitude,
-                  argument.longitudeData2: currentPickupLongitude,
-                }),
+                function: (){
+                  _isPickupToDestinationOption = false;
+                  update();
+                  countDistance(dataCoordinates: {
+                    argument.latitudeData: currentLatitude,
+                    argument.longitudeData: currentLongitude,
+                    argument.latitudeData2: currentPickupLatitude,
+                    argument.longitudeData2: currentPickupLongitude,
+                  });
+                },
                 btnTitle: stringConstant.currentLocationToPickup,
               ),
               generalButtons.PrimaryButton(
-                function: () => countDistance(dataCoordinates: {
-                  argument.latitudeData: currentLatitude,
-                  argument.longitudeData: currentLongitude,
-                  argument.latitudeData2: currentDestinationLatitude,
-                  argument.longitudeData2: currentDestinationLongitude,
-                }),
+                function: (){
+                  _isPickupToDestinationOption = false;
+                  update();
+                  countDistance(dataCoordinates: {
+                    argument.latitudeData: currentLatitude,
+                    argument.longitudeData: currentLongitude,
+                    argument.latitudeData2: currentDestinationLatitude,
+                    argument.longitudeData2: currentDestinationLongitude,
+                  });
+                },
                 btnTitle: stringConstant.currentLocationToDestination,
               ),
               generalButtons.PrimaryButton(
-                function: () => countDistance(dataCoordinates: {
-                  argument.latitudeData: currentPickupLatitude,
-                  argument.longitudeData: currentPickupLongitude,
-                  argument.latitudeData2: currentDestinationLatitude,
-                  argument.longitudeData2: currentDestinationLongitude,
-                }),
+                function: (){
+                  _isPickupToDestinationOption = true;
+                  update();
+                  countDistance(dataCoordinates: {
+                    argument.latitudeData: currentPickupLatitude,
+                    argument.longitudeData: currentPickupLongitude,
+                    argument.latitudeData2: currentDestinationLatitude,
+                    argument.longitudeData2: currentDestinationLongitude,
+                  });
+                },
                 btnTitle: stringConstant.pickupToDestination,
               ),
             ],

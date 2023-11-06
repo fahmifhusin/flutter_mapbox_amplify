@@ -28,4 +28,7 @@ class StringConstant{
   final String from = 'from';
   final String to = 'to';
   final String distance = 'distance';
+  final String startNavigation = 'Start Navigation';
+  final String stopNavigation = 'Stop Navigation';
+  final String action = 'Action';
 }
