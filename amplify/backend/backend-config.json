@@ -45,6 +45,31 @@
       "service": "Cognito"
     }
   },
+  "function": {
+    "fluttermapboxamplifydeaffa19": {
+      "build": true,
+      "providerPlugin": "awscloudformation",
+      "service": "Lambda"
+    }
+  },
+  "parameters": {
+    "AMPLIFY_function_fluttermapboxamplifydeaffa19_deploymentBucketName": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fluttermapboxamplifydeaffa19"
+        }
+      ]
+    },
+    "AMPLIFY_function_fluttermapboxamplifydeaffa19_s3Key": {
+      "usedBy": [
+        {
+          "category": "function",
+          "resourceName": "fluttermapboxamplifydeaffa19"
+        }
+      ]
+    }
+  },
   "storage": {
     "dynamomapbox": {
       "providerPlugin": "awscloudformation",

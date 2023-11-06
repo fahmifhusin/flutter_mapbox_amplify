@@ -340,7 +340,10 @@ class HomeController extends GetxController {
 
   Future<void> saveLocationPickupAndDestination() async {
     try{
-      await Amplify.Auth.getCurrentUser().then((value) => logger.d('value user : $value'));
+      await Amplify.Auth.getCurrentUser().then((value) {
+        logger.d('value user : $value');
+
+      });
     }catch(_){
       Get.toNamed(Routes.LOGIN);
     }
