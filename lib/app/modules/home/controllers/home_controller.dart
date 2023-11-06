@@ -382,8 +382,8 @@ class HomeController extends GetxController {
     });
   }
 
-  void gotoLogin(){
-    Get.toNamed(Routes.LOGIN)!.then((value){
+  Future<void> gotoLogin() async {
+    await Get.toNamed(Routes.LOGIN)!.then((value){
       logger.d('value back : $value');
       if(value == true){
         refreshAuthData();
