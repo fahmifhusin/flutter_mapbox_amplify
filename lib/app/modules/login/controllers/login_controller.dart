@@ -4,31 +4,32 @@ class LoginController extends GetxController {
   TextEditingController tecEmailOrPhone = TextEditingController();
   TextEditingController tecPassword = TextEditingController();
   bool _isLoading = false;
+  var _signInValid = false.obs;
 
-  void setPageLoading({required bool value}){
+  void setPageLoading({required bool value}) {
     _isLoading = value;
     update();
   }
 
-  bool get isSignInDataIsValid =>
-      tecEmailOrPhone.text != '' && tecPassword.text != '';
+  bool get isLoading => _isLoading;
 
-  void verifySignUpForm() {
-    isSignInDataIsValid ? true : false;
+  bool isSignInDataIsValid() {
+    _signInValid.value = tecEmailOrPhone.text != '' && tecPassword.text != '';
+    return _signInValid.value;
   }
 
-  void clearFieldSignIn(){
+  void clearFieldSignIn() {
     tecEmailOrPhone.text = '';
     tecPassword.text = '';
   }
 
   Future<void> doSignIn() async {
-    if (isSignInDataIsValid) {
+    if (isSignInDataIsValid() && !_isLoading) {
       ///load api
       setPageLoading(value: true);
       try {
         await Amplify.Auth.signIn(
-            username: tecEmailOrPhone.text, password: tecPassword.text)
+                username: tecEmailOrPhone.text, password: tecPassword.text)
             .then((value) {
           logger.d('result is :${value}');
           setPageLoading(value: false);
@@ -36,7 +37,10 @@ class LoginController extends GetxController {
         });
       } on AuthErrorResult catch (e) {
         setPageLoading(value: false);
-        generalDialog.showGeneralSnackbar(title: stringConstant.error, msg: e.exception.message);
+        generalDialog.showGeneralSnackbar(
+            title: stringConstant.error,
+            msg: e.exception.message,
+            customColor: colorConstant.redAutumn);
       } catch (e) {
         logger.d('error nya : ${e}');
         setPageLoading(value: false);
@@ -45,7 +49,11 @@ class LoginController extends GetxController {
             .split('"message":')[1]
             .split(',')[0]
             .replaceAll('"', '');
-        generalDialog.showGeneralSnackbar(title: stringConstant.error, msg: errMsg != '' ? errMsg : stringConstant.generalMsgError);
+        generalDialog.showGeneralSnackbar(
+          title: stringConstant.error,
+          msg: errMsg != '' ? errMsg : stringConstant.generalMsgError,
+          customColor: colorConstant.redAutumn,
+        );
       }
     }
   }

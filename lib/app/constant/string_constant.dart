@@ -49,6 +49,7 @@ class StringConstant{
   final String alreadyHaveAccount = 'Already have an account? ';
   final String verifySignUp = 'Verify my Account';
   final String verificationCode = 'Verification Code';
+  final String verificationSuccess= 'Verification Success';
   final String successVerify ='Register account Success!';
   final String hi = 'Hi,';
 
