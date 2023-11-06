@@ -4,6 +4,7 @@ class HomeController extends GetxController {
   var _currentPosition = '...'.obs;
   var _currentLatitude = '...'.obs;
   var _currentLongitude = '...'.obs;
+  bool _isLoggedIn = false;
   double _currentPickupLatitude = 0.0;
   double _currentPickupLongitude = 0.0;
   double _currentDestinationLatitude = 0.0;
@@ -283,6 +284,8 @@ class HomeController extends GetxController {
 
   bool get trackLocation => _trackLocation;
 
+  bool get isLoggedIn => _isLoggedIn;
+
   showDialogCountDistance() {
     stopMapNavigation();
     Get.dialog(
@@ -379,6 +382,37 @@ class HomeController extends GetxController {
     });
   }
 
+  void gotoLogin(){
+    Get.toNamed(Routes.LOGIN)!.then((value){
+      logger.d('value back : $value');
+      if(value == true){
+        refreshAuthData();
+      }
+    });
+  }
+
+  Future<void> refreshAuthData() async {
+    try {
+      await Amplify.Auth.getCurrentUser().then((value) async {
+        final String userId = value.userId;
+        Future.delayed(const Duration(milliseconds: 3000), () async {
+          await Amplify.DataStore.query(
+              LOCATIONDATA.classType,
+              where: LOCATIONDATA.USERID.eq(userId));
+          logger.d('value user : $value');
+          logger.d('logged in : true');
+          _isLoggedIn = true;
+
+        });
+        update();
+      });
+    } catch (e) {
+      logger.d('logged in : true');
+      _isLoggedIn = false;
+
+    }
+  }
+
   Future<void> saveLocationPickupAndDestination() async {
     try {
       await Amplify.Auth.getCurrentUser().then((value) async {
@@ -405,7 +439,7 @@ class HomeController extends GetxController {
         }
       });
     } catch (_) {
-      Get.toNamed(Routes.LOGIN);
+      gotoLogin();
     }
   }
 

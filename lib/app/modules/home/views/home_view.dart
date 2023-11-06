@@ -12,6 +12,20 @@ class HomeView extends GetView<HomeController> {
             : stringConstant.appName),
         backgroundColor: colorConstant.splashYellow,
         centerTitle: false,
+        actions: [
+          GetBuilder(
+              init: controller,
+              builder: (controller) => !controller.isLoggedIn
+                  ? TextButton(
+                      onPressed: () => controller.gotoLogin(),
+                      child: Text(
+                        stringConstant.signIn,
+                        style: styleConstant.Text14Body1(
+                          customColor: colorConstant.naturalWhite,
+                        ),
+                      ))
+                  : SizedBox())
+        ],
       ),
       body: GetBuilder(
         init: controller,
@@ -69,12 +83,14 @@ class HomeView extends GetView<HomeController> {
                               ? dimensionConstant.spacing20
                               : 0,
                         ),
-                        controller.isMarkerEnable?Expanded(
-                            child: generalButtons.PrimaryButton(
-                                function: () => controller
-                                    .saveLocationPickupAndDestination(),
-                                btnTitle: stringConstant.save,
-                                customIcon: assetsConstant.imgMapboxMarker)):SizedBox()
+                        controller.isMarkerEnable
+                            ? Expanded(
+                                child: generalButtons.PrimaryButton(
+                                    function: () => controller
+                                        .saveLocationPickupAndDestination(),
+                                    btnTitle: stringConstant.save,
+                                    customIcon: assetsConstant.imgMapboxMarker))
+                            : SizedBox()
                       ],
                     )
                   : Text(

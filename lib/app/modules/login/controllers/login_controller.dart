@@ -63,6 +63,6 @@ class LoginController extends GetxController {
   }
 
   void gotoDashboardAfterLogin() {
-    Get.back();
+    Get.back(result: true);
   }
 }
