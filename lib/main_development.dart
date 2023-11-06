@@ -8,6 +8,7 @@ import 'flavors.dart';
 Future<void> main() async {
   F.appFlavor = Flavor.development;
   await dotenv.load(fileName: environmentPath.development);
+  functionSharing.configureAmplifyInstance();
   runApp(
     GetMaterialApp(
       debugShowCheckedModeBanner: false,

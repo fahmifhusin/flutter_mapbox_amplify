@@ -20,6 +20,9 @@ dependencies:
   flutter_geocoder: 0.2.2-nullsafety
   mapbox_maps_flutter: 0.5.0
   amplify_flutter: 1.6.0
+  amplify_auth_cognito: 1.6.0
+  amplify_datastore: 1.6.0
+  amplify_api: 1.6.0
   flutter: 
     sdk: flutter
 
