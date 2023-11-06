@@ -24,7 +24,7 @@
       "function": {
         "fluttermapboxamplifydeaffa19": {
           "deploymentBucketName": "amplify-fluttermapboxamplify-dev-112436-deployment",
-          "s3Key": "amplify-builds/fluttermapboxamplifydeaffa19-5a2f5530717772526a65-build.zip"
+          "s3Key": "amplify-builds/fluttermapboxamplifydeaffa19-322f5730586a664e356b-build.zip"
         }
       }
     }

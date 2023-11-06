@@ -10,20 +10,20 @@ class FunctionSharing {
   }
 
   Future<Position> get _position async => await Geolocator.getCurrentPosition(
-    desiredAccuracy: LocationAccuracy.high,
-  );
+        desiredAccuracy: LocationAccuracy.high,
+      );
 
   Future<String> getCurrentCoordinate() async {
     Position positions = await _position;
-    final coordinates =
-    Coordinates(positions.latitude, positions.longitude);
+    final coordinates = Coordinates(positions.latitude, positions.longitude);
     var addresses =
-    await Geocoder.local.findAddressesFromCoordinates(coordinates);
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
     var address = addresses.first;
-    return address.addressLine??'-';
+    return address.addressLine ?? '-';
   }
-  
-  double getDistance(lat1, long1, lat2, long2) =>Geolocator.distanceBetween(lat1, long1, lat2, long2);
+
+  double getDistance(lat1, long1, lat2, long2) =>
+      Geolocator.distanceBetween(lat1, long1, lat2, long2);
 
   Future<String> getLatitude() async {
     Position positions = await _position;
@@ -39,23 +39,24 @@ class FunctionSharing {
 
   Future<void> configureAmplifyInstance() async {
     final authPlugin = AmplifyAuthCognito();
-    final datastorePlugin = AmplifyDataStore(modelProvider: ModelProvider.instance);
+    final datastorePlugin =
+        AmplifyDataStore(modelProvider: ModelProvider.instance);
     final apiPlugin = AmplifyAPI();
-    await Amplify.addPlugins([apiPlugin,authPlugin,datastorePlugin]);
     try {
-      await Amplify.configure(amplifyconfig).then((_){
-        try{
-          Amplify.Auth.signOut();
-        }catch(_){
-          logger.d('error because not login yet');
-        }
-      });
+      await Amplify.addPlugins([apiPlugin, authPlugin, datastorePlugin])
+          .whenComplete(
+              () async => await Amplify.configure(amplifyconfig).then((_) {
+                    try {
+                      Amplify.Auth.signOut();
+                    } catch (_) {
+                      logger.d('error because not login yet');
+                    }
+                  }));
     } on AmplifyAlreadyConfiguredException {
       logger.d(
           'Tried to reconfigure Amplify; this can occur when your app restarts on Android.');
-    }catch(_){
+    } catch (_) {
       logger.d('error to configure');
     }
   }
-
 }

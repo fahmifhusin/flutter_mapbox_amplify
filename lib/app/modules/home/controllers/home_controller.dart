@@ -393,6 +393,7 @@ class HomeController extends GetxController {
 
   Future<void> refreshAuthData() async {
     try {
+      _isLoggedIn = true;
       await Amplify.Auth.getCurrentUser().then((value) async {
         final String userId = value.userId;
         Future.delayed(const Duration(milliseconds: 3000), () async {
@@ -402,9 +403,8 @@ class HomeController extends GetxController {
           logger.d('value user : $value');
           logger.d('logged in : true');
           _isLoggedIn = true;
-
+          update();
         });
-        update();
       });
     } catch (e) {
       logger.d('logged in : true');
