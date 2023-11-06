@@ -41,7 +41,6 @@ class StyleConstant {
     );
   }
 
-
   TextStyle Text20Heading1({
     Color customColor = Colors.black,
     double? customHeight,
@@ -75,7 +74,7 @@ class StyleConstant {
     bool isSemiBold = true,
   }) {
     return TextStyle(
-      fontWeight: fontwRegular,
+      fontWeight: isSemiBold ? fontwSemiBold : fontwRegular,
       color: customColor,
       fontSize: dimensionConstant.spacing14,
     );
@@ -91,17 +90,19 @@ class StyleConstant {
 
   Widget GeneralAppPage(
       {required Widget body,
-        bool isDisableScroll = false,
-        Color? customAppBarColor,
-        bool isEnableBack = true,
-        Function? customFunctionBack,
-        Color? pageColor}) {
+      bool isDisableScroll = false,
+      Color? customAppBarColor,
+      bool isEnableBack = true,
+      Function? customFunctionBack,
+      Color? pageColor}) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: customAppBarColor != null && customAppBarColor != colorConstant.naturalWhite && !Platform.isIOS
+      value: customAppBarColor != null &&
+              customAppBarColor != colorConstant.naturalWhite &&
+              !Platform.isIOS
           ? SystemUiOverlayStyle(
-        statusBarColor: customAppBarColor,
-        statusBarBrightness: Brightness.light,
-      )
+              statusBarColor: customAppBarColor,
+              statusBarBrightness: Brightness.light,
+            )
           : SystemUiOverlayStyle.dark,
       child: WillPopScope(
         onWillPop: () async {
@@ -112,9 +113,9 @@ class StyleConstant {
         },
         child: SafeArea(
             child: Scaffold(
-              backgroundColor: pageColor,
-              body: isDisableScroll ? body : SingleChildScrollView(child: body),
-            )),
+          backgroundColor: pageColor,
+          body: isDisableScroll ? body : SingleChildScrollView(child: body),
+        )),
       ),
     );
   }

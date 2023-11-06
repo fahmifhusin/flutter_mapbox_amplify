@@ -37,6 +37,13 @@ class HomeView extends GetView<HomeController> {
               builder: (controller) => Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  ///set dari controller kalo ada waktu keneh
+                  Text(
+                    'Action : Walking',
+                    style: styleConstant.Text14Body1(
+                      isSemiBold: true,
+                    ),
+                  ),
                   Text('${stringConstant.from} : ${controller.waypointFrom}'),
                   Text('${stringConstant.to} : ${controller.waypointTo}'),
                   Text('${stringConstant.distance} : ${controller.distance}'),
