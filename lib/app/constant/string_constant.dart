@@ -31,4 +31,34 @@ class StringConstant{
   final String startNavigation = 'Start Navigation';
   final String stopNavigation = 'Stop Navigation';
   final String action = 'Action';
+
+  ///sign up
+  final String headerSignUp =
+      'Sign In to Mapbox to Save your location';
+  final String headerSignUpVerification = 'We have sent a verification code to';
+  final String signUp = 'Sign Up';
+  final String emailOrPhone = 'Email / Phone Number';
+  final String name = 'Full Name';
+  final String email = 'Email';
+  final String phoneNumber = 'Phone Number';
+  final String password = 'Password';
+  final String confirmPassword = 'Confirm Password';
+  final String currentWeight = 'Current Weight (Kg)';
+  final String weightGoals = 'Weight Goals (Kg)';
+  final String or = 'or';
+  final String alreadyHaveAccount = 'Already have an account? ';
+  final String verifySignUp = 'Verify my Account';
+  final String verificationCode = 'Verification Code';
+  final String successVerify ='Register account Success!';
+  final String hi = 'Hi,';
+
+  ///sign in
+  final String signInHeader =
+      'Sign In to Mapbox to Save your location';
+  final String signIn = 'Sign in';
+  final String dontHaveAccount = 'Don\'t have an account? ';
+
+  ///other
+  final String error = 'Error';
+  final String generalMsgError = 'An error occurred, please try again in a few moments.';
 }

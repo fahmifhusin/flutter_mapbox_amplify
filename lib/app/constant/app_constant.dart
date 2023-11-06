@@ -27,6 +27,7 @@ DioSetup dioService = DioSetup();
 ///global constant
 AssetsConstant assetsConstant = AssetsConstant();
 ColorConstant colorConstant = ColorConstant();
+CustomField customField = CustomField();
 DimensionConstant dimensionConstant = DimensionConstant();
 EnvironmentPath environmentPath = EnvironmentPath();
 FunctionSharing functionSharing = FunctionSharing();

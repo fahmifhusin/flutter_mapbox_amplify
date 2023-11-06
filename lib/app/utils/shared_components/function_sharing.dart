@@ -58,13 +58,4 @@ class FunctionSharing {
     }
   }
 
-
-
-  Future <AuthUser?> getUserData() async {
-    AuthUser? userData;
-    await Amplify.Auth.getCurrentUser().then((value) => userData = value);
-    return userData;
-  }
-
-
 }

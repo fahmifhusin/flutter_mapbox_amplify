@@ -260,7 +260,8 @@ class HomeController extends GetxController {
   String get distance =>
       '${_distance.toStringAsFixed(0)} ${stringConstant.meters}';
 
-  bool get isRouteAvailable => _polylineAnnotation != null && !_isPickupToDestinationOption;
+  bool get isRouteAvailable =>
+      _polylineAnnotation != null && !_isPickupToDestinationOption;
 
   bool get trackLocation => _trackLocation;
 
@@ -289,8 +290,9 @@ class HomeController extends GetxController {
                 height: dimensionConstant.spacing10,
               ),
               generalButtons.PrimaryButton(
-                function: (){
+                function: () {
                   _isPickupToDestinationOption = false;
+                  Get.back();
                   update();
                   countDistance(dataCoordinates: {
                     argument.latitudeData: currentLatitude,
@@ -302,8 +304,9 @@ class HomeController extends GetxController {
                 btnTitle: stringConstant.currentLocationToPickup,
               ),
               generalButtons.PrimaryButton(
-                function: (){
+                function: () {
                   _isPickupToDestinationOption = false;
+                  Get.back();
                   update();
                   countDistance(dataCoordinates: {
                     argument.latitudeData: currentLatitude,
@@ -315,8 +318,9 @@ class HomeController extends GetxController {
                 btnTitle: stringConstant.currentLocationToDestination,
               ),
               generalButtons.PrimaryButton(
-                function: (){
+                function: () {
                   _isPickupToDestinationOption = true;
+                  Get.back();
                   update();
                   countDistance(dataCoordinates: {
                     argument.latitudeData: currentPickupLatitude,
@@ -332,6 +336,14 @@ class HomeController extends GetxController {
         ),
       ),
     );
+  }
+
+  Future<void> saveLocationPickupAndDestination() async {
+    try{
+      await Amplify.Auth.getCurrentUser().then((value) => logger.d('value user : $value'));
+    }catch(_){
+      Get.toNamed(Routes.LOGIN);
+    }
   }
 
   @override

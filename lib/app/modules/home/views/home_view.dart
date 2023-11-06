@@ -35,36 +35,51 @@ class HomeView extends GetView<HomeController> {
             GetBuilder(
               init: controller,
               builder: (controller) => Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  ///set dari controller kalo ada waktu keneh
-                  Text(
-                    '${stringConstant.action} : Walking',
-                    style: styleConstant.Text14Body1(
-                      isSemiBold: true,
-                    ),
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ///set dari controller kalo ada waktu keneh
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        // mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            '${stringConstant.action} : Walking',
+                            style: styleConstant.Text14Body1(
+                              isSemiBold: true,
+                            ),
+                          ),
+                          IconButton(
+                              onPressed: () =>controller.saveLocationPickupAndDestination(),
+                              icon: Icon(
+                                Icons.bookmark,
+                                color: Colors.lightBlue,
+                              ))
+                        ],
+                      ),
+                      Text(
+                          '${stringConstant.from} : ${controller.waypointFrom}'),
+                      Text('${stringConstant.to} : ${controller.waypointTo}'),
+                      Text(
+                          '${stringConstant.distance} : ${controller.distance}'),
+                      SizedBox(
+                        height: dimensionConstant.spacing12,
+                      ),
+                      controller.isRouteAvailable
+                          ? generalButtons.PrimaryButton(
+                              customBtnColor: controller.trackLocation
+                                  ? colorConstant.redAutumn
+                                  : Colors.lightBlue,
+                              function: () => controller.trackLocation
+                                  ? controller.stopMapNavigation()
+                                  : controller.startMapNavigation(),
+                              btnTitle: controller.trackLocation
+                                  ? stringConstant.stopNavigation
+                                  : stringConstant.startNavigation,
+                            )
+                          : SizedBox()
+                    ],
                   ),
-                  Text('${stringConstant.from} : ${controller.waypointFrom}'),
-                  Text('${stringConstant.to} : ${controller.waypointTo}'),
-                  Text('${stringConstant.distance} : ${controller.distance}'),
-                  SizedBox(
-                    height: dimensionConstant.spacing12,
-                  ),
-                  controller.isRouteAvailable
-                      ? generalButtons.PrimaryButton(
-                          customBtnColor: controller.trackLocation
-                              ? colorConstant.redAutumn
-                              : Colors.lightBlue,
-                          function: () => controller.trackLocation
-                              ? controller.stopMapNavigation()
-                              : controller.startMapNavigation(),
-                          btnTitle: controller.trackLocation
-                              ? stringConstant.stopNavigation
-                              : stringConstant.startNavigation,
-                        )
-                      : SizedBox()
-                ],
-              ),
             ),
             Row(
               children: [
