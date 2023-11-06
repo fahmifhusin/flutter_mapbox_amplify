@@ -29,7 +29,6 @@ class HomeController extends GetxController {
     final ByteData bytes =
         await rootBundle.load(assetsConstant.imgMapboxMarker);
     final Uint8List list = bytes.buffer.asUint8List();
-
     poam
         ?.create(PointAnnotationOptions(
           geometry: Point(
@@ -51,25 +50,19 @@ class HomeController extends GetxController {
     update();
   }
 
-  void createOneAnnotation() {
+  void setWaypoint({required coordinates}){
     List<Position> coordinatesData = [];
-    final dataWaypoint = [
-      [107.657742, -6.949278],
-      [107.658077, -6.949298],
-      [107.658549, -6.948591],
-      [107.659413, -6.947168],
-      [107.659803, -6.946564],
-      [107.660586, -6.945307]
-    ];
-    for (int i = 0; i < dataWaypoint.length; i++) {
-      coordinatesData.add(Position(dataWaypoint[i][0], dataWaypoint[i][1]));
+    for (int i = 0; i < coordinates.length; i++) {
+      coordinatesData.add(Position(coordinates[i][0], coordinates[i][1]));
     }
     polylineAnnotationManager
         ?.create(PolylineAnnotationOptions(
-            geometry: LineString(coordinates: coordinatesData).toJson(),
-            lineColor: Colors.blueAccent.value,
-            lineWidth: 3))
+        geometry: LineString(coordinates: coordinatesData).toJson(),
+        lineColor: Colors.blueAccent.value,
+        lineWidth: 3))
         .then((value) => polylineAnnotation = value);
+    update();
+    Get.back();
   }
 
   void onMapboxCreated(MapboxMap controllerMapbox) async {
@@ -77,45 +70,6 @@ class HomeController extends GetxController {
     setCurrentLocation();
     mapboxMap?.annotations.createPolylineAnnotationManager().then((value) {
       polylineAnnotationManager = value;
-      createOneAnnotation();
-      //   final positions = <List<Position>>[];
-      //   final dataWaypoint = [
-      //     [
-      //       107.657742,
-      //       -6.949278
-      //     ],
-      //     [
-      //       107.658077,
-      //       -6.949298
-      //     ],
-      //     [
-      //       107.658549,
-      //       -6.948591
-      //     ],
-      //     [
-      //       107.659413,
-      //       -6.947168
-      //     ],
-      //     [
-      //       107.659803,
-      //       -6.946564
-      //     ],
-      //     [
-      //       107.660586,
-      //       -6.945307
-      //     ]
-      //   ];
-      //   for (int i = 0; i < dataWaypoint.length; i++) {
-      //     positions.add([Position(dataWaypoint[i][0], dataWaypoint[i][1])]);
-      //   }
-      //
-      //   polylineAnnotationManager?.createMulti(positions
-      //       .map((e) => PolylineAnnotationOptions(
-      //           geometry: LineString(coordinates: e).toJson(),
-      //           lineColor: 14562559))
-      //       .toList());
-      //   polylineAnnotationManager
-      //       ?.addOnPolylineAnnotationClickListener(listener!);
     });
   }
 
@@ -209,7 +163,9 @@ class HomeController extends GetxController {
       argument.longitudeData: dataCoordinates[argument.longitudeData],
       argument.latitudeData2: dataCoordinates[argument.latitudeData2],
       argument.longitudeData2: dataCoordinates[argument.longitudeData2],
-    });
+    })?.then(
+      (value) => setWaypoint(coordinates: value.routes![0].geometry!.coordinates),
+    );
   }
 
   showDialogCountDistance() {
