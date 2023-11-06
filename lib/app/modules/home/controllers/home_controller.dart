@@ -110,7 +110,9 @@ class HomeController extends GetxController {
           )).toJson(),
           zoom: dimensionConstant.spacing18,
         ),
-        null);
+        MapAnimationOptions(
+          duration: 500,
+        ));
     update();
   }
 
