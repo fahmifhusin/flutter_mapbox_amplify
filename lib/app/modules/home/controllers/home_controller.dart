@@ -34,9 +34,6 @@ class HomeController extends GetxController {
   PolylineAnnotation? _polylineAnnotation;
   PolylineAnnotationManager? _polylineAnnotationManager;
 
-  ///variable for handle start navigation
-  PointAnnotationManager? pointAnnotationNavigator;
-
   Future<void> _createMarker(
       {required double latitude,
       required double longitude,
