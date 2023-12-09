@@ -18,7 +18,7 @@ late String kAppPlatform;
 late String kWhatsAppNumberAdmin;
 
 ///global service setup
-const String mapboxToken = 'pk.eyJ1IjoiZmFobWlmaHVzaW4iLCJhIjoiY2xva2FncGI2MDNnazJsbjM1MDJrYnNnayJ9.x-fJtXrb-fL_2jZJRWC1pg';
+const String mapboxToken = 'TOKEN MAPBOX';
 final baseAppUrl = dotenv.env['BASE_URL'];
 final baseAppUrlMapbox = 'https://api.mapbox.com';
 final websiteUrl = dotenv.env['WEB_URL'];
